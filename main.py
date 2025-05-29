@@ -1,34 +1,11 @@
 import tkinter as tk
 from tkinter import messagebox
 import random
+import json
 
-# Fragen-Datenbank
-fragen_datenbank = {
-    "leicht": [
-        {"frage": "Was ist die Hauptstadt von Frankreich?", "antworten": ["Paris", "London", "Berlin", "Madrid"], "richtig": "Paris"},
-        {"frage": "Wie viele Beine hat eine Spinne?", "antworten": ["6", "8", "10", "12"], "richtig": "8"},
-        {"frage": "Welche Farbe entsteht aus Blau und Gelb?", "antworten": ["Grün", "Orange", "Violett", "Schwarz"], "richtig": "Grün"},
-        {"frage": "Was trinkt eine Kuh?", "antworten": ["Wasser", "Milch", "Saft", "Benzin"], "richtig": "Wasser"},
-        {"frage": "Welches Tier ist ein Haustier?", "antworten": ["Hund", "Tiger", "Hai", "Löwe"], "richtig": "Hund"},
-        {"frage": "Was benutzt man zum Schreiben?", "antworten": ["Stift", "Löffel", "Hammer", "Pfanne"], "richtig": "Stift"}
-    ],
-    "mittel": [
-        {"frage": "Welcher Planet ist der größte im Sonnensystem?", "antworten": ["Mars", "Jupiter", "Erde", "Venus"], "richtig": "Jupiter"},
-        {"frage": "Wer malte die Mona Lisa?", "antworten": ["Leonardo da Vinci", "Picasso", "Van Gogh", "Michelangelo"], "richtig": "Leonardo da Vinci"},
-        {"frage": "Wie viele Bundesländer hat Deutschland?", "antworten": ["14", "15", "16", "17"], "richtig": "16"},
-        {"frage": "In welchem Jahr fiel die Berliner Mauer?", "antworten": ["1987", "1989", "1991", "1993"], "richtig": "1989"},
-        {"frage": "Welcher Kontinent ist der größte?", "antworten": ["Afrika", "Asien", "Europa", "Amerika"], "richtig": "Asien"},
-        {"frage": "Was ist ein Synonym für 'beginnen'?", "antworten": ["starten", "schlafen", "rennen", "hören"], "richtig": "starten"}
-    ],
-    "schwer": [
-        {"frage": "Wie heißt das chemische Element mit dem Symbol 'Au'?", "antworten": ["Gold", "Silber", "Kupfer", "Eisen"], "richtig": "Gold"},
-        {"frage": "Wer schrieb 'Faust'?", "antworten": ["Goethe", "Schiller", "Heine", "Lessing"], "richtig": "Goethe"},
-        {"frage": "Welche Zahl ist eine Primzahl?", "antworten": ["21", "23", "27", "33"], "richtig": "23"},
-        {"frage": "Was ist die Quadratwurzel von 144?", "antworten": ["10", "11", "12", "13"], "richtig": "12"},
-        {"frage": "Wie heißt der längste Fluss der Welt?", "antworten": ["Nil", "Amazonas", "Jangtse", "Mississippi"], "richtig": "Amazonas"},
-        {"frage": "Wer entwickelte die Relativitätstheorie?", "antworten": ["Newton", "Einstein", "Tesla", "Bohr"], "richtig": "Einstein"}
-    ]
-}
+# Fragen-Datenbank aus externer JSON-Datei laden
+with open("fragen_beispiel.json", "r", encoding="utf-8") as f:
+    fragen_datenbank = json.load(f)
 
 # Geldleiter (passend zu 12 Fragen)
 geldleiter = [
