@@ -9,9 +9,9 @@ with open("fragen_beispiel.json", "r" , encoding="utf-8") as f:
 
 # Geldleiter (passend zu 12 Fragen)
 geldleiter = [
-    "100 €", "200 €", "300 €", "500 €",  # leicht
-    "1.000 €", "2.000 €", "4.000 €", "8.000 €",  # mittel
-    "16.000 €", "32.000 €", "64.000 €", "125.000 €"  # schwer
+    "100 €", "200 €", "300 €", "500 €", "1.000",  # leicht
+    "2.000 €", "4.000 €", "8.000 €", "16.000 €", "32.000 €",  # mittel
+    "64.000 €", "125.000 €", "250.000 €", "500.000 €", "1.000.000 €"  # schwer
 ]
 
 # Farben für Schwierigkeitsstufen
@@ -26,7 +26,6 @@ class MillionaireGame:
         self.root = root
         self.root.title("Wer wird Millionär")
         self.frage_index = 0
-        self.leben = 3
         self.alle_fragen = self.generate_questions()
 
         # UI Elemente
@@ -40,24 +39,24 @@ class MillionaireGame:
             self.buttons.append(btn)
 
         # Leben- und Geldleiteranzeige
-        self.status_label = tk.Label(root, text=f"Leben: {self.leben} | Aktueller Gewinn: 0 €", font=("Arial", 12))
+        self.status_label = tk.Label(root, text=f"| Aktueller Gewinn: 0 € |", font=("Arial", 12))
         self.status_label.pack(pady=15)
 
         self.naechste_frage()
 
     def generate_questions(self):
-        # 4 aus jeder Kategorie zufällig wählen (ohne Wiederholung)
+        # 5 aus jeder Kategorie zufällig wählen (ohne Wiederholung)
         selected_questions = []
-        selected_questions += random.sample(fragen_datenbank["leicht"], 4)
-        selected_questions += random.sample(fragen_datenbank["mittel"], 4)
-        selected_questions += random.sample(fragen_datenbank["schwer"], 4)
+        selected_questions += random.sample(fragen_datenbank["leicht"], 5)
+        selected_questions += random.sample(fragen_datenbank["mittel"], 5)
+        selected_questions += random.sample(fragen_datenbank["schwer"], 5)
         return selected_questions
 
     def get_schwierigkeit(self):
         # Gibt die Schwierigkeit der aktuellen Frage zurück, abhängig vom Index
-        if self.frage_index < 4:
+        if self.frage_index < 5:
             return "leicht"
-        elif self.frage_index < 8:
+        elif self.frage_index < 10:
             return "mittel"
         else:
             return "schwer"
@@ -82,7 +81,7 @@ class MillionaireGame:
 
     def update_status(self):
         gewinn = geldleiter[self.frage_index - 1] if self.frage_index > 0 else "0 €"
-        self.status_label.config(text=f"Leben: {self.leben} | Aktueller Gewinn: {gewinn}")
+        self.status_label.config(text=f"| Aktueller Gewinn: {gewinn} |")
 
     def antwort_pruefen(self, auswahl_index):
         aktuelle_frage = self.alle_fragen[self.frage_index]
@@ -91,13 +90,8 @@ class MillionaireGame:
             self.frage_index += 1
             self.naechste_frage()
         else:
-            self.leben -= 1
-            if self.leben > 0:
-                messagebox.showwarning("Falsch!", f"Leider falsch! Die richtige Antwort war: {aktuelle_frage['richtig']}\nDu hast noch {self.leben} Leben.")
-                self.update_status()
-            else:
-                messagebox.showerror("Game Over!", f"Du hast keine Leben mehr. Die richtige Antwort war: {aktuelle_frage['richtig']}\nDu hast {geldleiter[self.frage_index - 1] if self.frage_index > 0 else '0 €'} gewonnen.")
-                self.root.quit()
+            messagebox.showerror("Game Over!", f"Die richtige Antwort war: {aktuelle_frage['richtig']}\nDu hast {geldleiter[self.frage_index - 1] if self.frage_index > 0 else '0 €'} gewonnen.")
+            self.root.quit()
 
 if __name__ == "__main__":
     root = tk.Tk()
