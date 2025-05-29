@@ -4,7 +4,7 @@ import random
 import json
 
 # Fragen-Datenbank aus externer JSON-Datei laden
-with open("fragen_beispiel.json", "r", encoding="utf-8") as f:
+with open("fragen_beispiel.json", "r" , encoding="utf-8") as f:
     fragen_datenbank = json.load(f)
 
 # Geldleiter (passend zu 12 Fragen)
