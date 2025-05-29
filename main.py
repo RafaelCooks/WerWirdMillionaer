@@ -7,7 +7,7 @@ import json
 with open("fragen_beispiel.json", "r" , encoding="utf-8") as f:
     fragen_datenbank = json.load(f)
 
-# Geldleiter (passend zu 12 Fragen)
+# Geldleiter (passend zu 15 Fragen)
 geldleiter = [
     "100 €", "200 €", "300 €", "500 €", "1.000",  # leicht
     "2.000 €", "4.000 €", "8.000 €", "16.000 €", "32.000 €",  # mittel
