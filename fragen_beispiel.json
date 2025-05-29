@@ -1,6 +1,31 @@
 {
   "leicht": [
     {
+    "frage": "Wie viele Tage hat eine normale Woche?",
+    "antworten": ["5", "6", "7", "8"],
+    "richtig": "7"
+    },
+    {
+    "frage": "Welche Farbe hat der Himmel an einem klaren Tag?",
+    "antworten": ["Blau", "Rot", "Grün", "Gelb"],
+    "richtig": "Blau"
+    },
+    {
+    "frage": "Was ist 2 + 2?",
+    "antworten": ["3", "4", "5", "6"],
+    "richtig": "4"
+    },
+    {
+    "frage": "Welcher dieser Begriffe bezeichnet ein Obst?",
+    "antworten": ["Apfel", "Tisch", "Schuh", "Lampe"],
+    "richtig": "Apfel"
+    },
+    {
+    "frage": "Welches Tier bellt?",
+    "antworten": ["Hund", "Katze", "Kuh", "Huhn"],
+    "richtig": "Hund"
+    },  
+    {
       "frage": "Was ist die Hauptstadt von Frankreich?",
       "antworten": [
         "Paris",
