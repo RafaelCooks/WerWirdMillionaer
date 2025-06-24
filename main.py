@@ -18,7 +18,7 @@ geldleiter = [
 farben = {
     "leicht": "#4CAF50",  # grün
     "mittel": "#FFC107",  # gelb
-    "schwer": "#F44336"   # rot
+    "schwer": "#F44336"   # rotjkl
 }
 
 class MillionaireGame:
