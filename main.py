@@ -380,8 +380,18 @@ class MillionaireGame(tk.Frame):
             fg=farben[schwierigkeit]
         )
 
+        # Antworten mischen
+        antworten = frage["antworten"][:]
+        random.shuffle(antworten)
+
+        # Neue richtige Antwort merken
+        frage["gemischte_antworten"] = antworten
+        frage["richtig"] = frage["richtig"]  # bleibt gleich, aber prüfen gegen neue Liste
+
+        # Buttons setzen
         for i in range(4):
-            self.buttons[i].config(text=frage["antworten"][i], state="normal", bg="#3a3f78")
+            self.buttons[i].config(text=antworten[i], state="normal", bg="#3a3f78")
+
 
         self.highlight_geldstufe()
         self.update_timer()
