@@ -2,7 +2,7 @@ import tkinter as tk
 import random
 import json
 
-with open("fragen_beispiel.json", "r", encoding="utf-8") as f:
+with open("fragenkatalog.json", "r", encoding="utf-8") as f:
     fragen_datenbank = json.load(f)
 
 geldleiter = [
