@@ -389,12 +389,16 @@ class MillionaireGame(tk.Frame):
         falsche = [a for a in gemischt if a != richtige_antwort]
         verbleibend = joker_50_50(richtige_antwort, falsche)
 
-        # Verstecke zwei falsche Buttons
+        # Setze nur verbleibende Buttons aktiv
         for btn in self.buttons:
-            if btn.cget("text") not in verbleibend:
+            text = btn.cget("text")
+            if text in verbleibend:
+                btn.config(state="normal")
+            else:
                 btn.config(state="disabled", text="")
 
         self.joker_btn_5050.config(state="disabled")
+
     
     def nutze_publikumsjoker(self):
         frage = self.alle_fragen[self.frage_index]
