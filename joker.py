@@ -32,6 +32,7 @@ def gib_antwort(frage, richtige_antwort, falsche_antworten, wissen_prozent):
     korrekt = random.random() < wissen_prozent / 100
     return richtige_antwort if korrekt else random.choice(falsche_antworten)
 
+# --- Telefonjoker ---
 def telefonjoker(frage, richtige_antwort, falsche_antworten):
     labels = ["Chemie", "Physik", "Politik", "Sport", "Biologie", "Gesundheit", "Internet",
               "Astronomie", "Wissenschaft", "Musik", "Medien", "Umwelt", "Mode", "Literatur",
@@ -53,3 +54,10 @@ def telefonjoker(frage, richtige_antwort, falsche_antworten):
         })
 
     return ergebnisse
+
+# --- 50:50 Joker ---
+
+def joker_50_50(richtige_antwort, falsche_antworten):
+    # Wähle zufällig eine der drei falschen Antworten
+    falsch_geblieben = random.choice(falsche_antworten)
+    return [richtige_antwort, falsch_geblieben]

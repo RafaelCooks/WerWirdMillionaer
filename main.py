@@ -1,7 +1,7 @@
 import tkinter as tk
 import random
 import json
-from joker import telefonjoker
+from joker import telefonjoker, joker_50_50
 
 with open("fragenkatalog.json", "r", encoding="utf-8") as f:
     fragen_datenbank = json.load(f)
@@ -129,6 +129,7 @@ class MillionaireGame(tk.Frame):
                                     bg="#1b1f3b", fg="white")
         self.timer_label.pack(pady=20)
 
+        #Telefonjoker Button
         self.sidebar = tk.Frame(self, width=200, bg="#121428")
         self.sidebar.pack(side="right", fill="y")
         
@@ -139,6 +140,13 @@ class MillionaireGame(tk.Frame):
                                    bg="#2196F3", fg="white", padx=10, pady=5,
                                    command=self.nutze_telefonjoker)
         self.joker_btn.pack(pady=5)
+
+        #50-50 Joker Button
+        self.joker_btn_5050 = tk.Button(self.joker_frame, text="🧮 50:50 Joker", font=("Segoe UI", 12),
+                                bg="#9C27B0", fg="white", padx=10, pady=5,
+                                command=self.nutze_5050_joker)
+        self.joker_btn_5050.pack(pady=5)
+
 
         self.geldleiter_labels = []
         for i, betrag in reversed(list(enumerate(geldleiter))):
@@ -245,6 +253,22 @@ class MillionaireGame(tk.Frame):
 
         tk.messagebox.showinfo("Telefonjoker", meldung)
         self.joker_btn.config(state="disabled")
+
+    def nutze_5050_joker(self):
+        frage = self.alle_fragen[self.frage_index]
+        richtige_antwort = frage["richtig"]
+        gemischt = frage["gemischte_antworten"]
+
+        falsche = [a for a in gemischt if a != richtige_antwort]
+        verbleibend = joker_50_50(richtige_antwort, falsche)
+
+        # Verstecke zwei falsche Buttons
+        for btn in self.buttons:
+            if btn.cget("text") not in verbleibend:
+                btn.config(state="disabled", text="")
+
+        self.joker_btn_5050.config(state="disabled")
+
 
 
 
