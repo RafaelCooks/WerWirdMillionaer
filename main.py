@@ -132,59 +132,6 @@ class MillionaireGame(tk.Frame):
             random.sample(fragen_datenbank["leicht"], 5)
         )
 
-    # def setup_ui(self):
-    #     self.main_frame = tk.Frame(self, bg="#1b1f3b")
-    #     self.main_frame.pack(side="left", fill="both", expand=True)
-
-    #     self.frage_label = tk.Label(self.main_frame, text="", font=("Segoe UI", 22, "bold"),
-    #                                 wraplength=900, fg="white", bg="#1b1f3b", justify="center")
-    #     self.frage_label.pack(pady=30)
-
-    #     self.buttons_frame = tk.Frame(self.main_frame, bg="#1b1f3b")
-    #     self.buttons_frame.pack()
-
-    #     self.buttons = []
-    #     for i in range(4):
-    #         btn = tk.Button(self.buttons_frame, text="", font=("Segoe UI", 16), width=35, height=2,
-    #                         bg="#3a3f78", fg="white", activebackground="#6c63ff", bd=0,
-    #                         command=lambda i=i: self.antwort_pruefen(i))
-    #         btn.grid(row=i//2, column=i % 2, padx=20, pady=15)
-    #         self.buttons.append(btn)
-
-    #     self.timer_label = tk.Label(self.main_frame, text="", font=("Segoe UI", 16, "bold"),
-    #                                 bg="#1b1f3b", fg="white")
-    #     self.timer_label.pack(pady=20)
-
-    #     #Telefonjoker Button
-    #     self.sidebar = tk.Frame(self, width=200, bg="#121428")
-    #     self.sidebar.pack(side="right", fill="y")
-        
-    #     self.joker_frame = tk.Frame(self.sidebar, bg="#121428")
-    #     self.joker_frame.pack(pady=10)
-
-    #     self.joker_btn = tk.Button(self.joker_frame, text="📞 Telefonjoker", font=("Segoe UI", 12),
-    #                                bg="#2196F3", fg="white", padx=10, pady=5,
-    #                                command=self.nutze_telefonjoker, width = 20)
-    #     self.joker_btn.pack(pady=5)
-
-    #     #50-50Joker Button
-    #     self.joker_btn_5050 = tk.Button(self.joker_frame, text="🧮 50:50 Joker", font=("Segoe UI", 12),
-    #                             bg="#9C27B0", fg="white", padx=10, pady=5,
-    #                             command=self.nutze_5050_joker, width = 20)
-    #     self.joker_btn_5050.pack(pady=5)
-
-    #     #Publikumsjoker Button
-    #     self.joker_btn_pub = tk.Button(self.joker_frame, text="📊 Publikumsjoker", font=("Segoe UI", 12),
-    #                            bg="#FF9800", fg="white", padx=10, pady=5,
-    #                            command=self.nutze_publikumsjoker, width = 20)
-    #     self.joker_btn_pub.pack(pady=5)
-
-    #     self.geldleiter_labels = []
-    #     for i, betrag in reversed(list(enumerate(geldleiter))):
-    #         lbl = tk.Label(self.sidebar, text=f"{i+1}. {betrag}", font=("Segoe UI", 12),
-    #                        bg="#121428", fg="white", anchor="w", padx=10)
-    #         lbl.pack(fill="x", pady=2)
-    #         self.geldleiter_labels.insert(0, lbl)
     def setup_ui(self):
         self.main_frame = tk.Frame(self, bg="#1b1f3b")
         self.main_frame.pack(side="left", fill="both", expand=True, padx=40, pady=20)
@@ -225,6 +172,15 @@ class MillionaireGame(tk.Frame):
         # Timerbereich mit Balken
         self.timer_frame = tk.Frame(self.main_frame, bg="#1b1f3b")
         self.timer_frame.pack(pady=10)
+
+        # Publikumsjoker-Bereich (unsichtbar bis verwendet)
+        self.publikums_frame = tk.Frame(self.main_frame, bg="#1b1f3b")
+        self.publikums_frame.pack(pady=10, fill="x")
+        self.publikums_frame.pack_forget()  # Verstecken am Anfang
+
+        self.publikums_canvas = tk.Canvas(self.publikums_frame, width=500, height=200, bg="#1b1f3b", highlightthickness=0)
+        self.publikums_canvas.pack(fill="x", padx=50)
+
 
         self.timer_bar_canvas = tk.Canvas(self.timer_frame, height=20, width=400, bg="#444", bd=0, highlightthickness=0)
         self.timer_bar_canvas.pack()
@@ -308,17 +264,6 @@ class MillionaireGame(tk.Frame):
         self.update_timer()
 
     def update_timer(self):
-        # if self.timer_seconds <= 5:
-        #     self.timer_label.config(fg="red" if self.timer_seconds % 2 == 0 else "white")
-        # else:
-        #     self.timer_label.config(fg="white")
-
-        # self.timer_label.config(text=f"⏱️ Zeit: {self.timer_seconds}s")
-        # if self.timer_seconds > 0:
-        #     self.timer_seconds -= 1
-        #     self.timer_id = self.after(1000, self.update_timer)
-        # else:
-        #     self.app.show_end(False, geldleiter[self.frage_index - 1] if self.frage_index > 0 else "0 €", "Zeit abgelaufen!")
         max_time = {"leicht": 10, "mittel": 20, "schwer": 30}[self.get_schwierigkeit()]
         width = int((self.timer_seconds / max_time) * 400)
         color = "#4CAF50" if self.timer_seconds > 10 else "#FFC107" if self.timer_seconds > 5 else "#F44336"
@@ -407,14 +352,46 @@ class MillionaireGame(tk.Frame):
         falsche = [a for a in gemischt if a != richtige]
 
         stimmen = publikumsjoker(richtige, falsche)
-
-        # Sortiere nach Stimmen absteigend
-        sortiert = sorted(stimmen.items(), key=lambda x: x[1], reverse=True)
-
-        meldung = "\n".join([f"{a}: {s} Stimmen" for a, s in sortiert])
-        messagebox.showinfo("📊 Publikumsjoker", f"Das Publikum hat abgestimmt:\n\n{meldung}")
+        self.zeige_publikumsdiagramm(stimmen)
 
         self.joker_btn_pub.config(state="disabled")
+
+    def animate_bar(self, bar, value_text, bottom, target_height, final_value, step):
+        if step > target_height:
+            self.publikums_canvas.itemconfig(value_text, text=f"{final_value} %")
+            return
+        new_top = bottom - step
+        self.publikums_canvas.coords(bar, self.publikums_canvas.coords(bar)[0], new_top, self.publikums_canvas.coords(bar)[2], bottom)
+        self.publikums_canvas.coords(value_text, (self.publikums_canvas.coords(bar)[0] + self.publikums_canvas.coords(bar)[2]) / 2, new_top - 10)
+        self.after(10, lambda: self.animate_bar(bar, value_text, bottom, target_height, final_value, step + 5))
+
+
+    def zeige_publikumsdiagramm(self, stimmen_dict):
+        self.publikums_frame.pack()  # Frame anzeigen
+        self.publikums_canvas.delete("all")
+
+        # Einstellungen
+        bar_width = 60
+        spacing = 40
+        max_height = 120
+        x_start = 60
+        bottom = 140
+
+        max_stimmen = max(stimmen_dict.values())
+        farben = ["#4CAF50", "#2196F3", "#FFC107", "#F44336"]  # Farben für A-D
+
+        for i, (antwort, stimmen) in enumerate(sorted(stimmen_dict.items())):
+            x = x_start + i * (bar_width + spacing)
+            hoehe = int((stimmen / max_stimmen) * max_height)
+            farbe = farben[i % len(farben)]
+
+            # Lege ein Rechteck mit Höhe 0 an, fülle es animiert auf
+            bar = self.publikums_canvas.create_rectangle(x, bottom, x + bar_width, bottom, fill=farbe, width=0)
+            text = self.publikums_canvas.create_text(x + bar_width / 2, bottom + 15, text=antwort, fill="white", font=("Segoe UI", 12))
+            value_text = self.publikums_canvas.create_text(x + bar_width / 2, bottom - hoehe - 10, text="", fill="white", font=("Segoe UI", 12))
+
+            self.animate_bar(bar, value_text, bottom, hoehe, stimmen, 0)
+
 
 
 class EndScreen(tk.Frame):
