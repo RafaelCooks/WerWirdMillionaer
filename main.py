@@ -132,59 +132,141 @@ class MillionaireGame(tk.Frame):
             random.sample(fragen_datenbank["leicht"], 5)
         )
 
+    # def setup_ui(self):
+    #     self.main_frame = tk.Frame(self, bg="#1b1f3b")
+    #     self.main_frame.pack(side="left", fill="both", expand=True)
+
+    #     self.frage_label = tk.Label(self.main_frame, text="", font=("Segoe UI", 22, "bold"),
+    #                                 wraplength=900, fg="white", bg="#1b1f3b", justify="center")
+    #     self.frage_label.pack(pady=30)
+
+    #     self.buttons_frame = tk.Frame(self.main_frame, bg="#1b1f3b")
+    #     self.buttons_frame.pack()
+
+    #     self.buttons = []
+    #     for i in range(4):
+    #         btn = tk.Button(self.buttons_frame, text="", font=("Segoe UI", 16), width=35, height=2,
+    #                         bg="#3a3f78", fg="white", activebackground="#6c63ff", bd=0,
+    #                         command=lambda i=i: self.antwort_pruefen(i))
+    #         btn.grid(row=i//2, column=i % 2, padx=20, pady=15)
+    #         self.buttons.append(btn)
+
+    #     self.timer_label = tk.Label(self.main_frame, text="", font=("Segoe UI", 16, "bold"),
+    #                                 bg="#1b1f3b", fg="white")
+    #     self.timer_label.pack(pady=20)
+
+    #     #Telefonjoker Button
+    #     self.sidebar = tk.Frame(self, width=200, bg="#121428")
+    #     self.sidebar.pack(side="right", fill="y")
+        
+    #     self.joker_frame = tk.Frame(self.sidebar, bg="#121428")
+    #     self.joker_frame.pack(pady=10)
+
+    #     self.joker_btn = tk.Button(self.joker_frame, text="📞 Telefonjoker", font=("Segoe UI", 12),
+    #                                bg="#2196F3", fg="white", padx=10, pady=5,
+    #                                command=self.nutze_telefonjoker, width = 20)
+    #     self.joker_btn.pack(pady=5)
+
+    #     #50-50Joker Button
+    #     self.joker_btn_5050 = tk.Button(self.joker_frame, text="🧮 50:50 Joker", font=("Segoe UI", 12),
+    #                             bg="#9C27B0", fg="white", padx=10, pady=5,
+    #                             command=self.nutze_5050_joker, width = 20)
+    #     self.joker_btn_5050.pack(pady=5)
+
+    #     #Publikumsjoker Button
+    #     self.joker_btn_pub = tk.Button(self.joker_frame, text="📊 Publikumsjoker", font=("Segoe UI", 12),
+    #                            bg="#FF9800", fg="white", padx=10, pady=5,
+    #                            command=self.nutze_publikumsjoker, width = 20)
+    #     self.joker_btn_pub.pack(pady=5)
+
+    #     self.geldleiter_labels = []
+    #     for i, betrag in reversed(list(enumerate(geldleiter))):
+    #         lbl = tk.Label(self.sidebar, text=f"{i+1}. {betrag}", font=("Segoe UI", 12),
+    #                        bg="#121428", fg="white", anchor="w", padx=10)
+    #         lbl.pack(fill="x", pady=2)
+    #         self.geldleiter_labels.insert(0, lbl)
     def setup_ui(self):
         self.main_frame = tk.Frame(self, bg="#1b1f3b")
-        self.main_frame.pack(side="left", fill="both", expand=True)
+        self.main_frame.pack(side="left", fill="both", expand=True, padx=40, pady=20)
 
-        self.frage_label = tk.Label(self.main_frame, text="", font=("Segoe UI", 22, "bold"),
-                                    wraplength=900, fg="white", bg="#1b1f3b", justify="center")
-        self.frage_label.pack(pady=30)
+        # Fragebereich im "Card"-Stil
+        self.frage_rahmen = tk.Frame(self.main_frame, bg="#2c2f4c", bd=4, relief="ridge")
+        self.frage_rahmen.pack(pady=30, fill="x")
 
+        self.frage_label = tk.Label(self.frage_rahmen, text="", font=("Segoe UI", 26, "bold"),
+                                wraplength=900, fg="white", bg="#2c2f4c", justify="center",
+                                padx=20, pady=20)
+        self.frage_label.pack(fill="both", expand=True)
+
+        # Antwortbuttons
         self.buttons_frame = tk.Frame(self.main_frame, bg="#1b1f3b")
-        self.buttons_frame.pack()
+        self.buttons_frame.pack(pady=20)
 
         self.buttons = []
         for i in range(4):
-            btn = tk.Button(self.buttons_frame, text="", font=("Segoe UI", 16), width=35, height=2,
-                            bg="#3a3f78", fg="white", activebackground="#6c63ff", bd=0,
-                            command=lambda i=i: self.antwort_pruefen(i))
+            btn = tk.Button(
+                self.buttons_frame,
+                text="",
+                font=("Segoe UI", 16, "bold"),
+                width=30,
+                height=2,
+                bg="#3a3f78",
+                fg="white",
+                activebackground="#6c63ff",
+                activeforeground="white",
+                bd=0,
+                relief="flat",
+                highlightthickness=0,
+                command=lambda i=i: self.antwort_pruefen(i)
+            )
             btn.grid(row=i//2, column=i % 2, padx=20, pady=15)
             self.buttons.append(btn)
 
-        self.timer_label = tk.Label(self.main_frame, text="", font=("Segoe UI", 16, "bold"),
-                                    bg="#1b1f3b", fg="white")
-        self.timer_label.pack(pady=20)
+        # Timerbereich mit Balken
+        self.timer_frame = tk.Frame(self.main_frame, bg="#1b1f3b")
+        self.timer_frame.pack(pady=10)
 
-        #Telefonjoker Button
-        self.sidebar = tk.Frame(self, width=200, bg="#121428")
-        self.sidebar.pack(side="right", fill="y")
-        
-        self.joker_frame = tk.Frame(self.sidebar, bg="#121428")
-        self.joker_frame.pack(pady=10)
+        self.timer_bar_canvas = tk.Canvas(self.timer_frame, height=20, width=400, bg="#444", bd=0, highlightthickness=0)
+        self.timer_bar_canvas.pack()
+        self.timer_text = tk.Label(self.timer_frame, text="", font=("Segoe UI", 14, "bold"), fg="white", bg="#1b1f3b")
+        self.timer_text.pack(pady=5)
+
+        # Sidebar rechts
+        self.sidebar = tk.Frame(self, width=220, bg="#121428")
+        self.sidebar.pack(side="right", fill="y", padx=10)
+
+        # Joker-Bereich
+        self.joker_frame = tk.LabelFrame(self.sidebar, text="Joker", font=("Segoe UI", 12, "bold"),
+                                        bg="#121428", fg="white", bd=2, relief="groove", labelanchor="n")
+        self.joker_frame.pack(pady=15, padx=10, fill="x")
 
         self.joker_btn = tk.Button(self.joker_frame, text="📞 Telefonjoker", font=("Segoe UI", 12),
-                                   bg="#2196F3", fg="white", padx=10, pady=5,
-                                   command=self.nutze_telefonjoker, width = 20)
-        self.joker_btn.pack(pady=5)
+                                bg="#2196F3", fg="white", padx=10, pady=8,
+                                command=self.nutze_telefonjoker)
+        self.joker_btn.pack(pady=5, fill="x")
 
-        #50-50Joker Button
-        self.joker_btn_5050 = tk.Button(self.joker_frame, text="🧮 50:50 Joker", font=("Segoe UI", 12),
-                                bg="#9C27B0", fg="white", padx=10, pady=5,
-                                command=self.nutze_5050_joker, width = 20)
-        self.joker_btn_5050.pack(pady=5)
+        self.joker_btn_5050 = tk.Button(self.joker_frame, text="➗ 50:50 Joker", font=("Segoe UI", 12),
+                                        bg="#9C27B0", fg="white", padx=10, pady=8,
+                                        command=self.nutze_5050_joker)
+        self.joker_btn_5050.pack(pady=5, fill="x")
 
-        #Publikumsjoker Button
         self.joker_btn_pub = tk.Button(self.joker_frame, text="📊 Publikumsjoker", font=("Segoe UI", 12),
-                               bg="#FF9800", fg="white", padx=10, pady=5,
-                               command=self.nutze_publikumsjoker, width = 20)
-        self.joker_btn_pub.pack(pady=5)
+                                    bg="#FF9800", fg="white", padx=10, pady=8,
+                                    command=self.nutze_publikumsjoker)
+        self.joker_btn_pub.pack(pady=5, fill="x")
+
+        # Geldleiter
+        geld_frame = tk.LabelFrame(self.sidebar, text="Gewinnstufen", font=("Segoe UI", 12, "bold"),
+                                bg="#121428", fg="white", bd=2, relief="groove", labelanchor="n")
+        geld_frame.pack(pady=10, padx=10, fill="both", expand=True)
 
         self.geldleiter_labels = []
         for i, betrag in reversed(list(enumerate(geldleiter))):
-            lbl = tk.Label(self.sidebar, text=f"{i+1}. {betrag}", font=("Segoe UI", 12),
-                           bg="#121428", fg="white", anchor="w", padx=10)
-            lbl.pack(fill="x", pady=2)
+            lbl = tk.Label(geld_frame, text=f"{i+1}. {betrag}", font=("Segoe UI", 12),
+                        bg="#121428", fg="white", anchor="w", padx=10)
+            lbl.pack(fill="x", pady=1)
             self.geldleiter_labels.insert(0, lbl)
+
 
     def get_schwierigkeit(self):
         if self.frage_index < 5:
@@ -226,12 +308,26 @@ class MillionaireGame(tk.Frame):
         self.update_timer()
 
     def update_timer(self):
-        if self.timer_seconds <= 5:
-            self.timer_label.config(fg="red" if self.timer_seconds % 2 == 0 else "white")
-        else:
-            self.timer_label.config(fg="white")
+        # if self.timer_seconds <= 5:
+        #     self.timer_label.config(fg="red" if self.timer_seconds % 2 == 0 else "white")
+        # else:
+        #     self.timer_label.config(fg="white")
 
-        self.timer_label.config(text=f"⏱️ Zeit: {self.timer_seconds}s")
+        # self.timer_label.config(text=f"⏱️ Zeit: {self.timer_seconds}s")
+        # if self.timer_seconds > 0:
+        #     self.timer_seconds -= 1
+        #     self.timer_id = self.after(1000, self.update_timer)
+        # else:
+        #     self.app.show_end(False, geldleiter[self.frage_index - 1] if self.frage_index > 0 else "0 €", "Zeit abgelaufen!")
+        max_time = {"leicht": 10, "mittel": 20, "schwer": 30}[self.get_schwierigkeit()]
+        width = int((self.timer_seconds / max_time) * 400)
+        color = "#4CAF50" if self.timer_seconds > 10 else "#FFC107" if self.timer_seconds > 5 else "#F44336"
+
+        self.timer_bar_canvas.delete("all")
+        self.timer_bar_canvas.create_rectangle(0, 0, width, 20, fill=color, width=0)
+
+        self.timer_text.config(text=f"⏱️ Zeit: {self.timer_seconds}s", fg=color)
+
         if self.timer_seconds > 0:
             self.timer_seconds -= 1
             self.timer_id = self.after(1000, self.update_timer)
