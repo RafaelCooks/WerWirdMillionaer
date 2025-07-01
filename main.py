@@ -1,6 +1,7 @@
 import tkinter as tk
 import random
 import json
+from joker import telefonjoker
 
 with open("fragenkatalog.json", "r", encoding="utf-8") as f:
     fragen_datenbank = json.load(f)
@@ -130,6 +131,14 @@ class MillionaireGame(tk.Frame):
 
         self.sidebar = tk.Frame(self, width=200, bg="#121428")
         self.sidebar.pack(side="right", fill="y")
+        
+        self.joker_frame = tk.Frame(self.sidebar, bg="#121428")
+        self.joker_frame.pack(pady=10)
+
+        self.joker_btn = tk.Button(self.joker_frame, text="📞 Telefonjoker", font=("Segoe UI", 12),
+                                   bg="#2196F3", fg="white", padx=10, pady=5,
+                                   command=self.nutze_telefonjoker)
+        self.joker_btn.pack(pady=5)
 
         self.geldleiter_labels = []
         for i, betrag in reversed(list(enumerate(geldleiter))):
@@ -221,6 +230,22 @@ class MillionaireGame(tk.Frame):
                 lbl.config(bg="#FFD700", fg="#000")
             else:
                 lbl.config(bg="#121428", fg="white")
+
+    def nutze_telefonjoker(self):
+        frage = self.alle_fragen[self.frage_index]
+        aktuelle_frage = frage["frage"]
+        richtige_antwort = frage["richtig"]
+        falsche_antworten = [a for a in frage["antworten"] if a != richtige_antwort]
+
+        ergebnisse = telefonjoker(aktuelle_frage, richtige_antwort, falsche_antworten)
+
+        meldung = "\n".join(
+            f"{e['name']} ({e['wissen']} %): Ich denke, es ist '{e['antwort']}'." for e in ergebnisse
+        )
+
+        tk.messagebox.showinfo("Telefonjoker", meldung)
+        self.joker_btn.config(state="disabled")
+
 
 
 class EndScreen(tk.Frame):
