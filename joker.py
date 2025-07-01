@@ -56,7 +56,6 @@ def telefonjoker(frage, richtige_antwort, falsche_antworten):
     return ergebnisse
 
 # --- 50:50 Joker ---
-
 def joker_50_50(richtige_antwort, falsche_antworten):
     # Wähle zufällig eine der drei falschen Antworten
     falsch_geblieben = random.choice(falsche_antworten)

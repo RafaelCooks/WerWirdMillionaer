@@ -365,7 +365,6 @@ class MillionaireGame(tk.Frame):
         self.publikums_canvas.coords(value_text, (self.publikums_canvas.coords(bar)[0] + self.publikums_canvas.coords(bar)[2]) / 2, new_top - 10)
         self.after(10, lambda: self.animate_bar(bar, value_text, bottom, target_height, final_value, step + 5))
 
-
     def zeige_publikumsdiagramm(self, stimmen_dict):
         self.publikums_frame.pack()  # Frame anzeigen
         self.publikums_canvas.delete("all")
