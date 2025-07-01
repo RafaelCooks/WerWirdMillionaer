@@ -175,10 +175,10 @@ class MillionaireGame(tk.Frame):
 
         # Publikumsjoker-Bereich (unsichtbar bis verwendet)
         self.publikums_frame = tk.Frame(self.main_frame, bg="#1b1f3b")
-        self.publikums_frame.pack(pady=10, fill="x")
+        self.publikums_frame.pack(pady=10, fill="x", expand=True)
         self.publikums_frame.pack_forget()  # Verstecken am Anfang
 
-        self.publikums_canvas = tk.Canvas(self.publikums_frame, width=500, height=200, bg="#1b1f3b", highlightthickness=0)
+        self.publikums_canvas = tk.Canvas(self.publikums_frame, width=650, height=200, bg="#1b1f3b", highlightthickness=0)
         self.publikums_canvas.pack(fill="x", padx=50)
 
 
@@ -372,7 +372,7 @@ class MillionaireGame(tk.Frame):
 
         # Einstellungen
         bar_width = 60
-        spacing = 40
+        spacing = 100
         max_height = 120
         x_start = 60
         bottom = 140
