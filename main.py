@@ -1,7 +1,8 @@
 import tkinter as tk
 import random
 import json
-from joker import telefonjoker, joker_50_50
+from joker import telefonjoker, joker_50_50, publikumsjoker
+from tkinter import messagebox
 
 with open("fragenkatalog.json", "r", encoding="utf-8") as f:
     fragen_datenbank = json.load(f)
@@ -138,15 +139,20 @@ class MillionaireGame(tk.Frame):
 
         self.joker_btn = tk.Button(self.joker_frame, text="📞 Telefonjoker", font=("Segoe UI", 12),
                                    bg="#2196F3", fg="white", padx=10, pady=5,
-                                   command=self.nutze_telefonjoker)
+                                   command=self.nutze_telefonjoker, width = 20)
         self.joker_btn.pack(pady=5)
 
-        #50-50 Joker Button
+        #50-50Joker Button
         self.joker_btn_5050 = tk.Button(self.joker_frame, text="🧮 50:50 Joker", font=("Segoe UI", 12),
                                 bg="#9C27B0", fg="white", padx=10, pady=5,
-                                command=self.nutze_5050_joker)
+                                command=self.nutze_5050_joker, width = 20)
         self.joker_btn_5050.pack(pady=5)
 
+        #Publikumsjoker Button
+        self.joker_btn_pub = tk.Button(self.joker_frame, text="📊 Publikumsjoker", font=("Segoe UI", 12),
+                               bg="#FF9800", fg="white", padx=10, pady=5,
+                               command=self.nutze_publikumsjoker, width = 20)
+        self.joker_btn_pub.pack(pady=5)
 
         self.geldleiter_labels = []
         for i, betrag in reversed(list(enumerate(geldleiter))):
@@ -268,8 +274,22 @@ class MillionaireGame(tk.Frame):
                 btn.config(state="disabled", text="")
 
         self.joker_btn_5050.config(state="disabled")
+    
+    def nutze_publikumsjoker(self):
+        frage = self.alle_fragen[self.frage_index]
+        richtige = frage["richtig"]
+        gemischt = frage["gemischte_antworten"]
+        falsche = [a for a in gemischt if a != richtige]
 
+        stimmen = publikumsjoker(richtige, falsche)
 
+        # Sortiere nach Stimmen absteigend
+        sortiert = sorted(stimmen.items(), key=lambda x: x[1], reverse=True)
+
+        meldung = "\n".join([f"{a}: {s} Stimmen" for a, s in sortiert])
+        messagebox.showinfo("📊 Publikumsjoker", f"Das Publikum hat abgestimmt:\n\n{meldung}")
+
+        self.joker_btn_pub.config(state="disabled")
 
 
 class EndScreen(tk.Frame):
