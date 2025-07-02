@@ -316,20 +316,39 @@ class MillionaireGame(tk.Frame):
             else:
                 lbl.config(bg="#121428", fg="white")
 
+
+#nutze joker funktionen
     def nutze_telefonjoker(self):
-        frage = self.alle_fragen[self.frage_index]
-        aktuelle_frage = frage["frage"]
-        richtige_antwort = frage["richtig"]
-        falsche_antworten = [a for a in frage["antworten"] if a != richtige_antwort]
+        # Fenster zur Auswahl der Person
+        auswahl_fenster = tk.Toplevel(self)
+        auswahl_fenster.title("Wen möchtest du anrufen?")
+        auswahl_fenster.configure(bg="#1b1f3b")
+        auswahl_fenster.geometry("400x300")
+        auswahl_fenster.grab_set()  # blockiert Hintergrundinteraktion
 
-        ergebnisse = telefonjoker(aktuelle_frage, richtige_antwort, falsche_antworten)
+        label = tk.Label(auswahl_fenster, text="Wähle deinen Telefonjoker:", font=("Segoe UI", 14),
+                        fg="white", bg="#1b1f3b")
+        label.pack(pady=20)
 
-        meldung = "\n".join(
-            f"{e['name']} ({e['wissen']} %): Ich denke, es ist '{e['antwort']}'." for e in ergebnisse
-        )
+        def joker_antwort(personenname):
+            frage = self.alle_fragen[self.frage_index]
+            richtige_antwort = frage["richtig"]
+            falsche_antworten = [a for a in frage["antworten"] if a != richtige_antwort]
 
-        tk.messagebox.showinfo("Telefonjoker", meldung)
-        self.joker_btn.config(state="disabled")
+            ergebnis = telefonjoker(personenname, richtige_antwort, falsche_antworten)
+            auswahl_fenster.destroy()
+
+            meldung = f"{ergebnis['name']}: {ergebnis['sicherheit']} '{ergebnis['antwort']}'.\n(Sicherheit: {ergebnis['wissen']} %)"
+            messagebox.showinfo("Telefonjoker", meldung)
+            self.joker_btn.config(state="disabled")
+
+        for name in ["Albert Einstein", "Mama", "Papa", "Harald Lesch"]:
+            btn = tk.Button(auswahl_fenster, text=name, font=("Segoe UI", 12),
+                            width=20, bg="#3a3f78", fg="white",
+                            command=lambda n=name: joker_antwort(n))
+            btn.pack(pady=5)
+
+
 
     def nutze_5050_joker(self):
         frage = self.alle_fragen[self.frage_index]
@@ -348,7 +367,6 @@ class MillionaireGame(tk.Frame):
                 btn.config(state="disabled", text="")
 
         self.joker_btn_5050.config(state="disabled")
-
     
     def nutze_publikumsjoker(self):
         frage = self.alle_fragen[self.frage_index]
