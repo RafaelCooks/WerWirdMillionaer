@@ -128,8 +128,8 @@ class MillionaireGame(tk.Frame):
     def generate_questions(self):
         return (
             random.sample(fragen_datenbank["leicht"], 5) +
-            random.sample(fragen_datenbank["leicht"], 5) +
-            random.sample(fragen_datenbank["leicht"], 5)
+            random.sample(fragen_datenbank["mittel"], 5) +
+            random.sample(fragen_datenbank["schwer"], 5)
         )
 
     def setup_ui(self):
