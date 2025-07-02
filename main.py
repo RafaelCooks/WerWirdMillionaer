@@ -233,6 +233,11 @@ class MillionaireGame(tk.Frame):
             return "schwer"
 
     def naechste_frage(self):
+        
+        # Publikumsdiagramm ausblenden, falls vorher gezeigt
+        self.publikums_frame.pack_forget()
+
+        
         if self.frage_index >= len(self.alle_fragen):
             self.app.show_end(True, geldleiter[-1])
             return
