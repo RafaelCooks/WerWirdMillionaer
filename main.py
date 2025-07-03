@@ -319,34 +319,71 @@ class MillionaireGame(tk.Frame):
 
 #nutze joker funktionen
     def nutze_telefonjoker(self):
-        # Fenster zur Auswahl der Person
-        auswahl_fenster = tk.Toplevel(self)
-        auswahl_fenster.title("Wen möchtest du anrufen?")
-        auswahl_fenster.configure(bg="#1b1f3b")
-        auswahl_fenster.geometry("400x300")
-        auswahl_fenster.grab_set()  # blockiert Hintergrundinteraktion
+        self.joker_btn.config(state="disabled")
+        if self.timer_id:
+            self.after_cancel(self.timer_id)  # Timer pausieren
 
-        label = tk.Label(auswahl_fenster, text="Wähle deinen Telefonjoker:", font=("Segoe UI", 14),
+        self.telefon_frame = tk.Frame(self.main_frame, bg="#1b1f3b", bd=2)
+        self.telefon_frame.pack(pady=(10, 5))  # vorher: pady=20
+
+        label = tk.Label(self.telefon_frame, text="📞 Wen möchtest du anrufen?", font=("Segoe UI", 16, "bold"),
                         fg="white", bg="#1b1f3b")
-        label.pack(pady=20)
-
-        def joker_antwort(personenname):
-            frage = self.alle_fragen[self.frage_index]
-            richtige_antwort = frage["richtig"]
-            falsche_antworten = [a for a in frage["antworten"] if a != richtige_antwort]
-
-            ergebnis = telefonjoker(personenname, richtige_antwort, falsche_antworten)
-            auswahl_fenster.destroy()
-
-            meldung = f"{ergebnis['name']}: {ergebnis['sicherheit']} '{ergebnis['antwort']}'.\n(Sicherheit: {ergebnis['wissen']} %)"
-            messagebox.showinfo("Telefonjoker", meldung)
-            self.joker_btn.config(state="disabled")
+        label.pack(pady=10)
 
         for name in ["Albert Einstein", "Mama", "Papa", "Harald Lesch"]:
-            btn = tk.Button(auswahl_fenster, text=name, font=("Segoe UI", 12),
-                            width=20, bg="#3a3f78", fg="white",
-                            command=lambda n=name: joker_antwort(n))
+            btn = tk.Button(self.telefon_frame, text=name, font=("Segoe UI", 12),
+                            width=18, bg="#3a3f78", fg="white",
+                            command=lambda n=name: self.startelefonjoker(n))
             btn.pack(pady=5)
+
+    def startelefonjoker(self, name):
+        self.telefon_frame.destroy()
+
+        frage = self.alle_fragen[self.frage_index]
+        richtige_antwort = frage["richtig"]
+        falsche_antworten = [a for a in frage["antworten"] if a != richtige_antwort]
+
+        ergebnis = telefonjoker(name, richtige_antwort, falsche_antworten)
+
+        # Sprechblasen-Rahmen (rundlicher Stil)
+        self.sprechblase = tk.Frame(self.main_frame, bg="#2c2f4c", bd=2, relief="groove")
+        self.sprechblase.pack(pady=20, padx=30)
+
+        self.gespraech_label = tk.Label(
+            self.sprechblase,
+            text="",
+            font=("Segoe UI", 20),
+            fg="white",
+            bg="#2c2f4c",
+            wraplength=800,
+            justify="left",
+            padx=20,
+            pady=20
+        )
+        self.gespraech_label.pack()
+
+        self.gespraech_label.pack(pady=20)
+
+        satzliste = [
+            f"📞 {ergebnis['name']} ist jetzt am Telefon...",
+            f"{ergebnis['name']}: {ergebnis['sicherheit']} " + 
+            f"\n👉 «{ergebnis['antwort']}»",
+            f"(Wissensstand: {ergebnis['wissen']} %)"
+        ]
+
+        self.zeige_gespraech(satzliste, 0)
+
+    def zeige_gespraech(self, saetze, index):
+        if index >= len(saetze):
+            # Gesprächslabel entfernen
+            self.gespraech_label.after(2000, self.sprechblase.destroy)  # nach 2s löschen
+            self.after(500, self.update_timer)  # Timer neu starten
+            return
+
+        self.gespraech_label.config(text=saetze[index])
+        self.after(3000, lambda: self.zeige_gespraech(saetze, index + 1))
+
+
 
 
 
