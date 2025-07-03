@@ -791,16 +791,6 @@
       "richtig": "Arzt"
     },
     {
-      "frage": "Welcher deutsche Tik-toker wurde im Jahr 2025 durch den Verkauf eines Smartphones mit eingebautem Campinglicht bekannt?",
-      "antworten": [
-        "DinoSkill",
-        "Emir Mono",
-        "Kony gebony",
-        "Jeremy Fragrance"
-      ],
-      "richtig": "DinoSkill"
-    },
-    {
       "frage": "Welches dieser Dinge verwendet man zum Zähneputzen?",
       "antworten": [
         "Zahnbürste",
@@ -1009,7 +999,7 @@
     },
     {
       "frage": "Welcher Ozean ist der größte der Erde?",
-      "antworten": ["Pazifik", "Atlantik", "Indik", "Arktis"],
+      "antworten": ["Pazifik", "Atlantik", "Indischer Ozean", "Arktis"],
       "richtig": "Pazifik"
     },
     {
@@ -1496,11 +1486,6 @@
       "frage": "Welcher dieser Physiker entwickelte die Quantenmechanik?",
       "antworten": ["Werner Heisenberg", "Isaac Newton", "Galileo Galilei", "James Clerk Maxwell"],
       "richtig": "Werner Heisenberg"
-    },
-    {
-      "frage": "Welches dieser Videos gilt als typisches „BrainrotPhänomen“?",
-      "antworten": ["Skibidi Toilet", "Das Musikvideo „Bohemian Rhapsody“", "Das NASA MarsRover Video", "Die Rede von Martin Luther King Jr."],
-      "richtig": "Skibidi Toilet"
     }
   ],
   "schwer": [
@@ -1708,11 +1693,6 @@
       "frage": "Welcher dieser Philosophen schrieb „Also sprach Zarathustra“?",
       "antworten": ["Friedrich Nietzsche", "Søren Kierkegaard", "Arthur Schopenhauer", "Ludwig Wittgenstein"],
       "richtig": "Friedrich Nietzsche"
-    },
-    {
-      "frage": "Wie heißt das Land, in das Europäer mit weißer Haut, blonden Haaren und blauen Augen reißen möchten?",
-      "antworten": ["Agartha", "Nigeria", "Chopped-Hausen", "Rizz Academy"],
-      "richtig": "Agartha"
     },
     {
       "frage": "Welcher dieser Physiker entdeckte das „Elektron“?",
@@ -1948,11 +1928,6 @@
       "frage": "Welcher dieser Physiker entwickelte das „Laserprinzip“?",
       "antworten": ["Theodore Maiman", "Albert Einstein", "Charles Townes", "Max Planck"],
       "richtig": "Theodore Maiman"
-    },
-    {
-      "frage": "Wie heißt die deutsche Influencerin, die fett ist, aber keine Diät macht?",
-      "antworten": ["Curve Maria", "Jules Boring life", "Zahide", "Emir Mono"],
-      "richtig": "Curve Maria"
     },
     {
       "frage": "Welcher dieser Mathematiker entwickelte das „Poissonsche Gesetz“?",
