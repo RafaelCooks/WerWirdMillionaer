@@ -317,7 +317,9 @@ class MillionaireGame(tk.Frame):
                 lbl.config(bg="#121428", fg="white")
 
 
-#nutze joker funktionen
+#nutze joker funktionen:
+
+#telefonjoker:
     def nutze_telefonjoker(self):
         self.joker_btn.config(state="disabled")
         if self.timer_id:
@@ -386,7 +388,7 @@ class MillionaireGame(tk.Frame):
 
 
 
-
+#50-50 joker:
     def nutze_5050_joker(self):
         frage = self.alle_fragen[self.frage_index]
         richtige_antwort = frage["richtig"]
@@ -404,7 +406,11 @@ class MillionaireGame(tk.Frame):
                 btn.config(state="disabled", text="")
 
         self.joker_btn_5050.config(state="disabled")
-    
+
+
+
+
+#publikumsjoker:
     def nutze_publikumsjoker(self):
         frage = self.alle_fragen[self.frage_index]
         richtige = frage["richtig"]
@@ -450,7 +456,6 @@ class MillionaireGame(tk.Frame):
             value_text = self.publikums_canvas.create_text(x + bar_width / 2, bottom - hoehe - 10, text="", fill="white", font=("Segoe UI", 12))
 
             self.animate_bar(bar, value_text, bottom, hoehe, stimmen, 0)
-
 
 
 class EndScreen(tk.Frame):
