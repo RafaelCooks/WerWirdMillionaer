@@ -7,8 +7,8 @@ import requests  # Wird aktuell nicht genutzt, evtl. für zukünftige Erweiterun
 
 TELEFONJOKER_PERSONEN = [
     "Albert Einstein",
-    "Mama",
-    "Papa",
+    "Leonardo da Vinci",
+    "Dr. Watson",
     "Harald Lesch"
 ]
 

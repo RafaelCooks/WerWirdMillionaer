@@ -276,7 +276,7 @@ class MillionaireGame(tk.Frame):
         label.pack(pady=10)
 
         # Buttons für fiktive Gesprächspartner
-        for name in ["Albert Einstein", "Mama", "Papa", "Harald Lesch"]:
+        for name in ["Albert Einstein", "Leonardo da Vinci", "Dr. Watson", "Harald Lesch"]:
             btn = tk.Button(
                 self.telefon_frame,
                 text=name,
