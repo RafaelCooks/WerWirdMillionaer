@@ -303,7 +303,7 @@ class MillionaireGame(tk.Frame):
             self.gespraech_label.after(2000, self.sprechblase.destroy)
 
             # NUR Timer starten, wenn es überhaupt noch Fragen gibt
-            if self.frage_index < len(self.alle_fragen):
+            if self.frage_index < len(self.alle_fragen) and not self.timer_aktiv:
                 self.timer_aktiv = True
                 self.after(500, self.update_timer)
 
