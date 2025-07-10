@@ -3,8 +3,17 @@ import random
 import json
 from joker import telefonjoker, joker_50_50, publikumsjoker
 from tkinter import messagebox
+import sys
+import os
 
-with open("fragenkatalog.json", "r", encoding="utf-8") as f:
+def resource_path(relative_path):
+    """Gibt den Pfad zur Ressource zurück, unabhängig davon ob per PyInstaller oder nicht. (wichtig für Generieren des Spiels als .exe)"""
+    if hasattr(sys, '_MEIPASS'):
+        return os.path.join(sys._MEIPASS, relative_path)  # Pfad im temp-Ordner bei PyInstaller
+    return os.path.join(os.path.abspath("."), relative_path)
+
+
+with open(resource_path("fragenkatalog.json"),"r", encoding="utf-8")as f:
     fragen_datenbank = json.load(f)
 
 geldleiter = [
