@@ -20,6 +20,7 @@ farben = {
 }
 
 class MillionaireGame(tk.Frame):
+
     def __init__(self, parent, app):
         super().__init__(parent, bg="#1b1f3b")
         self.app = app
@@ -27,6 +28,7 @@ class MillionaireGame(tk.Frame):
         self.alle_fragen = self.generate_questions()
         self.timer_seconds = 0
         self.timer_id = None
+        self.timer_aktiv = True
 
         self.setup_ui()
         self.naechste_frage()
@@ -172,9 +174,18 @@ class MillionaireGame(tk.Frame):
 
 
         self.highlight_geldstufe()
+        # Vor dem neuen Timer: ggf. alten abbrechen
+        if self.timer_id:
+            self.after_cancel(self.timer_id)
+            self.timer_id = None
+
+        self.timer_aktiv = True  # neuer Timer darf laufen
         self.update_timer()
 
     def update_timer(self):
+        if not self.timer_aktiv or self.frage_index >= len(self.alle_fragen):
+            return
+
         max_time = {"leicht": 10, "mittel": 20, "schwer": 30}[self.get_schwierigkeit()]
         width = int((self.timer_seconds / max_time) * 400)
         color = "#4CAF50" if self.timer_seconds > 10 else "#FFC107" if self.timer_seconds > 5 else "#F44336"
@@ -188,11 +199,15 @@ class MillionaireGame(tk.Frame):
             self.timer_seconds -= 1
             self.timer_id = self.after(1000, self.update_timer)
         else:
+            self.timer_id = None
             self.app.show_end(False, geldleiter[self.frage_index - 1] if self.frage_index > 0 else "0 €", "Zeit abgelaufen!")
 
+
     def antwort_pruefen(self, index):
+        self.timer_aktiv = False
         if self.timer_id:
             self.after_cancel(self.timer_id)
+            self.timer_id = None
 
         frage = self.alle_fragen[self.frage_index]
         ausgewaehlt = self.buttons[index].cget("text")
@@ -230,6 +245,8 @@ class MillionaireGame(tk.Frame):
         self.joker_btn.config(state="disabled")
         if self.timer_id:
             self.after_cancel(self.timer_id)  # Timer pausieren
+            self.timer_id = None
+        self.timer_aktiv = False
 
         self.telefon_frame = tk.Frame(self.main_frame, bg="#1b1f3b", bd=2)
         self.telefon_frame.pack(pady=(10, 5))  # vorher: pady=20
@@ -276,7 +293,6 @@ class MillionaireGame(tk.Frame):
             f"📞 {ergebnis['name']} ist jetzt am Telefon...",
             f"{ergebnis['name']}: {ergebnis['sicherheit']} " + 
             f"\n👉 «{ergebnis['antwort']}»",
-            f"(Wissensstand: {ergebnis['wissen']} %)"
         ]
 
         self.zeige_gespraech(satzliste, 0)
@@ -284,8 +300,13 @@ class MillionaireGame(tk.Frame):
     def zeige_gespraech(self, saetze, index):
         if index >= len(saetze):
             # Gesprächslabel entfernen
-            self.gespraech_label.after(2000, self.sprechblase.destroy)  # nach 2s löschen
-            self.after(500, self.update_timer)  # Timer neu starten
+            self.gespraech_label.after(2000, self.sprechblase.destroy)
+
+            # NUR Timer starten, wenn es überhaupt noch Fragen gibt
+            if self.frage_index < len(self.alle_fragen):
+                self.timer_aktiv = True
+                self.after(500, self.update_timer)
+
             return
 
         self.gespraech_label.config(text=saetze[index])
